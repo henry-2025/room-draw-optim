@@ -1,0 +1,27 @@
+# these numbers must be the same in this formulation
+param n_rooms := 20;
+param n_people := 20;
+
+# room number prereferces
+param preferences := 
+1   2
+2   8
+3   18
+4   18
+5   16
+6   20
+7   2
+8   13
+9   11
+10  1
+11  12
+12  17
+13  8
+14  15
+15  2
+16  3
+17  9
+18  13
+19  15
+20  19
+;
