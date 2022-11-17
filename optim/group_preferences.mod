@@ -24,3 +24,11 @@ subject to Capacity {k in ROOMSETS}:
 # each group must be assigned to exactly one room
 subject to Group {j in GROUPS}:
 	sum{(j, k) in LINKS} assignment[j, k] <= 1;
+
+
+# Draft for potentially changing the objective function into maximin: 
+# var m >= 0;
+# maximize Minimum:
+# 	m;
+# subject to MinimumDefinition {j in GROUPS, k in ROOMSETS}:
+# 	m <= utility[i,j] + 10000*(1-assignment[i,j]);
