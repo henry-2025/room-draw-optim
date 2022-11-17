@@ -1,0 +1,190 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+
+\usepackage[style=alphabetic]{biblatex} 
+\addbibresource{References.bib}
+
+\author{Henry Pick \small hpick@hmc.edu \\
+\large Noah Nevens \small nnevens@hmc.edu \\
+\large Prakod Ngamlamai \small pngamlamai@hmc.edu}
+\title{HMC Room Draw Optimization}
+\DeclareMathOperator*{\maxi}{max}
+\begin{document}
+    \maketitle
+    \section*{Abstract}
+    Room Draw is an annual event at Harvey Mudd College that asks returning students to select a room to live in for the following year. Students are given priority numbers and select rooms in order of their priority from the remaining available rooms. The process is often exceedingly stressful as a result of each student trying to guess what every agent will do in order to maximize their own utility. We propose an improvement on the current room draw system in the form of a multi-phase model whereby students will be sorted into groups, state room preferences as a group and then be assigned to a room or suite as a group. We found that our primary model makes an improvement on the current system by 16\%. Moreover, we believe that the model can be implemented at some point in the near future. 
+    \section*{Executive Summary}
+    In our case study, we present a multi-phase protocol for room assignment that aims to be nearly optimal. We assume, as a result of our experience with Harvey Mudd room draw, that students care, first and foremost, about the people they live with. As such, we choose to first formulate groups of students and have them act as agents throughout the rest of the model. Those agents then state preferences for room types (e.g. single, double, triple, quad, suite), which we will collect as data. Based on these preferences, we will use a linear program to assign rooms and suites to groups of students.
+    
+    \subsection*{Phase 1: Roommate Matching}
+    The first stage of the protocol assigns priority numbers to students and asks them to state preferences for who to live with and what room type they'd in which they'd prefer to live. Under the current room draw system, students are already assigned priority numbers. Under our system, students with higher priority numbers will be able to unilaterally decide who they will live with according to their preferred room type. We are currently developing a user interface that students can use as a form to select a desired room type and then write in names of desired roommates or suitemates as well as their desired room type. 
+    
+    Each student will get three preferences, each of which will look    The form allows the student to state three distinct preferences. For each preference, the student names their desired room type (which can include a suite) and then lists a number of desired roommates according 
+    
+    This model assumes that students care more about with whom they live than in which specific room they live. In the event that a student cares more about their specific room assignment than the people they live with (an exceedingly rare case), they will be in a group by themself. like a different form and store different states. That way, if a student's first preference is a triple with students A and B but their second preference is a different room type with different students, then they can state their desires at that level of complexity. 
+    
+    We will discuss the specific methodology of this interface further in the technical report. But ultimately, we assign high priority students to their highest available preference (where available means that their desired roommates are not already taken and have a mutual desire to live with that student). 
+    
+    \subsection*{Phase 2: Stating Preferences as a Group} 
+    The next stage of the procedure does not involve an algorithm. Rather, we ask students to fill out another form, but this time they will do so as a group (specifically, the group they were assigned as per the previous phase). Each group must live in the room type they were assigned as a result of the first phase and with the group they were assigned. 
+    
+    This new form (currently under development) will ask each group of students to state their top 5 room preferences. This will first ask them to state a desired dorm, and then generate a list of floors according to the number of floors in that dorm. They will 
+    
+    After this stage, we will compile each group's desired room type, dorm, floor and preference for that room (e.g. first choice, second choice) into a utility score that the group would obtain from living in that room. A group's first choice gives them the most utility and any room that was not listed in their top 5 preferences gives them 0 utility. 
+    
+    \subsection*{Phase 3: The Linear Program} 
+    The linear program assigns groups to rooms in a way that maximizes utility for all participants. Each room has a specified capacity and the sum of the group sizes that are assigned to that room cannot exceed that capacity. Note that suites (in the case of Atwood, Linde and Drinkward) can be considered rooms under our model for groups that select "suite" as their desired room type. But they can also just be filled by multiple groups with a cumulative group size less than or equal to the suite capacity. Additionally, we constrain each group to be assigned to at least one room so that every student has a room. 
+    
+    We introduce multiple slightly different linear programs and test to determine the best way to perform our room assignment. They primarily differ in the number of preferences they allow students to make and the number of groups that can be assigned to a room/suite. Each model will be discussed in full in the technical report, but the model we ultimately chose is the one that coincides exactly with the three stages as they have been outlined in this summary. 
+    
+    \subsection*{Key Findings}
+    We simulated the current room draw system by assigning students their rooms in order of their priority numbers. Using the same generated preference data, we compared this simulation to our primary model. Our model improved the overall utility score by 16\%. This is an improvement that we consider worthy of implementation. Ideally, the model and the interfaces together can be implemented in the near future. 
+    
+    \section*{Technical Report}
+    \subsection*{Introduction}
+    For many students at Harvey Mudd, room draw is the most stressful time of the year. It's very difficult to coordinate your choice with that of all the other students vying for the same spot. Participants typically have a list of preferences prior to the draw, but many times they end up with none of their top choices because of how chaotically the event pans out. 
+    
+    We can gather information about students' preferences, including preferred dorm, room type, group they'd live with, etc. This motivates the creation of a model that uses the data to optimize the room draw problem that plagues so many students year to year. For the purposes of our project we generated our own data, but we are in the process of building a user interface that will allow students to select preference for a dorm, room type and roommates/suitemates. 
+
+    Our model sorts room draw into phases. First, we use a matching algorithm to sort students into groups based on their desire to live with one another. We are developing the interface and database to collect the necessary data.  
+    
+    The form allows the student to state three distinct preferences. For each preference, the student names their desired room type (which can include a suite) and then lists a number of desired roommates according to the size of the room type. This model assumes that students care more about with whom they live than in which specific room they live. In the event that a student cares more about their specific room assignment than the people they live with (an exceedingly rare case), they will be in a group by themself.
+    
+    In the next section we will give the formulations for several model candidates and variations of our final model. Before doing so, we will briefly overview each model and mention what distinguishes it from the others:
+
+    \begin{enumerate}
+        \item The \textbf{single preference} model allows each group of students to state only one room preference and allows each room to take only one group. This model is not final since it does not take full advantage of our second phase, which allows students to make multiple preferences. Additionally, it forces suites to be filled by only one group rather than a collection of groups. 
+        \item The \textbf{multi preference} model allows groups to state multiple preferences. However, each room or suite can still only hold one group, regardless of the group's size. This prevents groups from being broken up and maintains the one-to-one relationship between the group sizes and the room capacities. 
+        \item The \textbf{range preference} model is our primary model. Groups can select a range of rooms (e.g. rooms 15-21) and list them as a particular preference. Since all the rooms in a particular area have similar numbers, this allows groups to select an entire suite as part of their range. In fact, it allows multiple groups to be placed in a suite and, further, for them to be correctly sorted in the rooms of that suite. However each room within that suite can only receive one group of students. So a group of one and a group of two cannot make up a triple. But unlike the previous two models, a group of three and a group of two can both be in a suite provided there is a triple and a double in those groups' respective ranges.
+        \item The \textbf{min cost flow} model transforms the final phase of the model into a variant of the minimum cost flow problem. All the groups are fixed and can flow into rooms or suites. Each room has a capacity and the cumulative sizes of the groups that flow into a room or suite cannot exceed the capacity. 
+    \end{enumerate}
+    
+   We find that the range preference model gives us the most flexibility because it allows groups to choose rank ranges of rooms based on a given preference. This makes it so that if a group fails to, for instance, obtain a double on a certain floor, they can obtain the vacant double right next to it without having to explicitly state a separate preference for that alternate double. 
+   
+   All of the models make improvements on the current room draw system, but the range preference model allows the most flexibility and the ranges are more accurate to what we think students will prefer. 
+   
+   The next subsection will show the formulation for each of the four models we just outlined. We will then describe the results of running each model and how they compare to a simulation of the current room draw system using the same data. These results will help us argue in favor of replacing the current room draw system with ours. We will explain why we believe we can actually implement our model and then describe the next steps we need to take before doing so. 
+    
+    \subsection*{Model Formulation}
+    We implement the third phase process with the following models, which all maximize the total sum of utility.
+    \subsubsection*{Single Preference Model}
+    Let $G$ be the set of participant groups in Room Draw. \\
+    Let $R$ be the set of rooms, where $|R| = |G|$ \\
+    Let $P_r$ be the preference rank, which in the single preference model has only one element $P_r =\{1\}$. \\
+We have the following parameters: $w_{pr}$ the weight of preference rank $pr$ and $p_{g,pr}$ the preference with rank $pr$ of a particular group $g$. \\
+    We define the following decision variables: $s_{g,pr}$ a binary variable indicating whether preference $pr$ of group $g$ is met, and $a_{g,r}$ the binary variable indicating assignment of group $g$ to room $r$. 
+    \begin{align*}
+    \text{Max} &\sum_{g \in G, pr \in P_r} s_{g,pr}w_{pr}  & \\
+    \text{Subject to } &s_{g,pr} = a_{g,p_{g,pr}} &\forall g \in G, pr \in P_r\\ 
+    &\sum_{g \in G} a_{g,r} = 1 &\forall r \in R
+    \end{align*}
+    where the first constraint checks whether, for a group $g$, their $pr^{\text{th}}$ preference, which in this case is their only preference is satisfied through assignment. \\
+    The second constraint forces each room to accept only one group, which in turn implies that each person can only get into one room.
+    
+    \subsubsection*{Multi Preference Model}
+    The above model is applicable when there are more than one preference rank in the preference set $P_r$. \\
+    Let $G$ be the set of participant groups in Room Draw. \\
+    Let $R$ be the set of rooms, where $|R| = |G|$ \\
+    Let $P_r$ be the set of preference ranks. \\
+We have the following parameters: $w_{pr}$ the weight of preference rank $pr$ and $p_{g,pr}$ the preference with rank $pr$ of a particular group $g$. \\
+    We define the following decision variables: $s_{g,pr}$ a binary variable indicating whether preference $pr$ of group $g$ is met, and $a_{g,r}$ the binary variable indicating assignment of group $g$ to room $r$. 
+    
+    \begin{align*}
+    \text{Max} &\sum_{p \in P, pr \in P_r} s_{p,pr}w_{pr}    \\
+    \text{Subject to } &s_{g,pr} = a_{g,p_{g,pr}} &\forall g \in G, pr \in P_r\\ 
+    &\sum_{g \in G} a_{g,r} = 1 &\forall r \in R
+    \end{align*}
+    where again the first constraint checks whether, for a group $g$, their $pr^{\text{th}}$ preference (represented by $p_{g,pr}$) is satisfied through assignment. In which case $s_{g,pr} = 1$. \\
+    The second constraint forces each room to accept only one group, which in turn implies that each person can only get into one room.
+
+
+    \subsubsection*{Range Preference Model}
+    This model considers when a student select a range of rooms for a particular preference rank. We can slightly modify the previous models as follow: \\
+     Let $G$ be the set of participant groups in Room Draw. \\
+    Let $R$ be the set of rooms, where $|R| = |G|$ \\
+    Let $P_r$ be the set of preference ranks. \\
+We have the following parameters: $w_{pr}$ the weight of preference rank $pr$, $pl_{g,pr}$ the lower bound of the preference range with rank $pr$ of a particular group $g$, and $pu_{g,pr}$ the upper bound of the preference range with rank $pr$ of a particular group $g$\\
+    We define the following decision variables: $s_{g,pr}$ a binary variable indicating whether preference $pr$ of group $g$ is met, and $a_{g,r}$ the binary variable indicating assignment of group $g$ to room $r$. 
+    
+    \begin{align*}
+    \text{Max} &\sum_{p \in P, pr \in P_r} s_{p,pr}w_{pr}  & \\
+    \text{Subject to } &s_{g,pr} = \sum_{r = pl_{g,pr}}^{pu_{g,pr}} a_{g,r} &\forall g \in G, pr \in P_r\\ 
+    &\sum_{g \in G} a_{g,r} = 1 &\forall r \in R
+    \end{align*}
+    where again the first constraint checks whether, for a group $g$, their $pr^{\text{th}}$ preference range (represented by the range of the sum $\sum_{r = pl_{g,pr}}^{pu_{g,pr}}$) is satisfied through assignment $a_{g,r}$. In which case $s_{g,pr} = 1$. \\
+    The second constraint forces each room to accept only one group, which in turn implies that each person can only get into one room.
+
+    
+
+    
+    \subsubsection*{Minimum Cost Flow Model}
+    This model treats the process as a minimum cost flow problem, where cost here refers to the negative of utility.
+    Let $G$ be the set of participant group
+    Let $R$ be the set of room sets, which is a collection of rooms of particular characteristic.
+    Let $L$ be the set of edges or links between $G$ and $R$.
+    We have the following parameters: $u_{g,r}$ the utility of the link between $g \in G$ and $r \in R$, $c_r$ the capacity of room set $r$, and $s_g$ the size of group $g$. 
+    We define the following binary decision variable $a_{g,r}$ indicating whether the group $g$ is assigned to room set $r$.
+    
+    \begin{align*}
+        \text{Max} &\sum_{(g,r) \in L} u_{g,r}a_{g,r} &\\
+        \text{Subject to } &\sum_{g \in G} a_{g,r}s_g \leq c_r 
+        & \forall r \in R \\
+        &\sum_{r \in R} a_{g,r} = 1 & \forall g \in G
+    \end{align*}
+
+    where the first constraint forces the room capacity requirement and the second constraint forces the group to be assigned to only a single room.
+
+    
+    \subsection*{Results}
+    We compare the results from the Range Preference Model against a Priority Number Model using a shared randomly generated data sets and utility calculation. The Priority Number Model represents a simplified version of the current room draw process, where every participant is assigned a priority number and each chooses in a way to maximize their own utility when it is their turn. The details of this model can be found in Appendix B.
+    
+    After running the code on a data set (Appendix A), we receive $\textbf{2945}$ as the utility sum of the Range Preference Model. The utility sum of the Priority Number Model is $\textbf{2556}$. Thus, performing our Range Preference Model results in an increase of $16\%$ in utility.
+
+    Using another data set (Appendix A, preferences2.md), we found a utility sum of $\textbf{2945}$ for the Range Preference Model (the exact same) and a utility sum of $\textbf{2507}$ for the Priority Number Model. Thus, implementing the Range Preference Model results in a $17\%$ increase of utility sum. 
+
+    
+    \subsection*{Conclusion}
+    We conclude that 
+
+
+    
+    \section*{Appendix}
+    \subsection*{A: Data Sets}
+        Our data file is far too large for LaTex, but we have it stored in preferences.md on the model-tests branch of our GitHub repository:
+        https://github.com/henry-2025/room-draw-optim/tree/model-tests
+
+
+    
+    \subsection*{B: Priority Number Model Code}
+    \begin{verbatim}
+assignment = np.zeros(n_people, dtype=np.int32)
+weight = np.zeros(n_people, dtype=np.int32)
+for person in range(n_people):
+    assigned = False
+    for pref in range(n_preferences):
+        for i in range(preferences_lower[person, pref]-1, \
+        preferences_upper[person, pref]):
+            if not assignment[i]:
+                assigned = True
+                assignment[i] = person
+                weight[i] = n_preferences - pref
+                break
+        if assigned:
+            break
+    if not assigned:
+        for i in range(n_rooms):
+            if not assignment[i]:
+                assignment[i] = person
+                break
+    \end{verbatim}
+
+
+
+
+
+    \nocite{*}
+    \printbibliography[title = Bibliography]
+    
+\end{document}
