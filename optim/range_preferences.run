@@ -1,0 +1,14 @@
+option solver gurobi;
+option gurobi_options 'outlev 1';
+load amplcsv.dll;
+model range_preferences.mod;
+data range_preferences.dat;
+
+table preferences IN "amplcsv" "preferences.csv": [PEOPLE, PREFERENCE], preference_lower, preference_upper;
+table params IN "amplcsv" "params.csv": [], n_people, n_rooms, n_preferences;
+
+read table preferences;
+read table params;
+
+solve;
+display room_number;
