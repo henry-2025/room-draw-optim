@@ -1,6 +1,8 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -10,5 +12,5 @@ func main() {
 }
 
 func getStatus(c *gin.Context) {
-	c.JSON
+	c.JSON()
 }
