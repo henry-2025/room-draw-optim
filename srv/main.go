@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
+
+	"github.com/henry2025/roomdraw-optim-backend/api"
 )
 
 func main() {
-	r := gin.Default()
-	r.GET("/api/status", getStatus)
+	s := api.New()
 
-	r.Run()
-}
-
-func getStatus(c *gin.Context) {
-	c.JSON()
+	err := s.Run()
+	if err != nil {
+		fmt.Print(err)
+	}
 }
