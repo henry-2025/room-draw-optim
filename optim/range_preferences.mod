@@ -5,11 +5,12 @@ param n_preferences;
 
 set PEOPLE := {1..n_people};
 set PREFERENCES := {1..n_preferences};
+set LINKS within (PEOPLE cross PREFERENCES);
 set ROOMS := {1..n_rooms};
 
-param preference_lower{PEOPLE,PREFERENCES} >= 1, <= n_rooms;
-param preference_upper{PEOPLE,PREFERENCES} >= 1, <= n_rooms;
-param weights{PREFERENCES} >= 0;
+param preference_lower{LINKS} >= 1, <= n_rooms;
+param preference_upper{LINKS} >= 1, <= n_rooms;
+param weights{LINKS} >= 0;
 
 var satisfied{PEOPLE, PREFERENCES} integer binary;
 var assignment{PEOPLE, ROOMS} integer binary;
@@ -28,5 +29,5 @@ subject to AssignmentNumber {p in PEOPLE}:
 ;
 
 maximize Objective:
-    sum{p in PEOPLE, pr in PREFERENCES} satisfied[p, pr]*weights[pr]
+    sum{p in PEOPLE, pr in PREFERENCES} satisfied[p, pr]*weights[p,pr]
 ;
