@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\author{Henry Pick \small hpick@hmc.edu \\
+\large Noah Nevens \small nnevens@hmc.edu \\
+\large Prakod Ngamlamai \small pngamlamai@hmc.edu}
+\title{HMC Room Draw Optimization}
+\DeclareMathOperator*{\maxi}{max}
+\begin{document}
+    \maketitle
+    \section*{Problem Statement}
+    Room draw at Harvey Mudd College is the annual process in which returning students select their dorms for the coming academic year. The process requires large amounts of interpersonal communication to plan  draw strategies between groups who want to live with one another. An in-person ``mock draw'' session, which lasts several hours, ensures people's expectations and preferences are made public to other participants in the process. Finally, the real draw round is held to determine final room assignments. The process is time intensive and it can also be stressful to those who have less social influence in the period of pre-draw communication. There are also inevitable, but unforeseen changes that happen during the real draw round that have cascading effects throughout the rest of the process. As political and frustrating as room draw might seem, it is inherently an optimization problem where agents (the participants) adjust their preferences until an equilibrium is reached. 
+
+    Participants almost always have an implicit list of preferences before entering the draw. These include but are not limited to residence hall, room number, and the members of nearby rooms. All of this knowledge is accessible through communication but with the number of participants in the draw, it is impossible for every agent to act with full knowledge. Therefore, the equilibrium of draw cannot be a global optimum.
+    
+    In this project, our goal is to automate the selection procedure into a single-round assignment where everyone's preferences are taken into account. Our objective is to maximize the satisfaction of preferences, potentially subject to some weighting by seniority.
+    
+    There is no explicit quantitative utility measure for a set of decisions that are made. This leads part of the room draw optimization problem to be defining the utilities of certain outcomes. Most likely, we will use satisfaction of certain preferences as a heuristic for utility. We will have to use our own opinions and judgement to weight each of these satisfactions, however.
+
+    This problem can be approached with varying degrees of complexity. At a base level, we will want to implement a single dimensional assignment problem where, given a list of room preferences, a global optimum utility is achieved. We plan to greatly simplify the actual room draw process in an effort to avoid trying to solve a multidimensional assignment problem, which is NP hard. For instance, we assume that students care only about who their roommate is, but do not care about the other students living in their general vicinity (e.g. the students living on their floor). That is, we assume that rooms with the same room type in the same dorm are equivalent. Beyond that, we assume a constant number of students, ignoring those that might come later in the year or drop out or move to other dorms in the middle of the year. 
+    %We also make singles available only to those with the highest priority numbers and a student who can take a single will take it even if they don't want to. 
+    
+    Implementing this will fundamentally alter the room draw process, in which case we might want to simulate an selection round under the existing draw process and then compare utility results. If these two tasks can be accomplished with reasonable time to spare, we can focus on modeling more complex collaborative behaviors.
+
+    \section*{Preliminary Model}
+    \subsection*{Room Preference Model}
+    Room draw currently uses a round-based selection process, which assigns a priority number to each participant, determining the order in which their room selection takes place. Room draw rounds are then organized by seniority, meaning there are three class rounds. We plan to alter this process by separating the room draw into two process: roommate round and room draw round.
+    \subsubsection*{Roommate Round}
+    In this round, all students are assigned priority numbers and then asked for their room type preference (single, double, etc.) as well as preferences for other student(s) as roommates. We will make the simplifying assumption that a person with higher priority can unilaterally decide who they will room with according to their most preferred available room type. Also, they will be assigned roommates randomly if their preferred roommates are all unavailable.
+    
+    After the end of this round, we will have a set of student grouped into singles, doubles, triples, and quadruples that will be assigned into rooms in the next round. 
+
+    \subsubsection*{Room Draw Round}
+    In this round, each group will be asked to rate their preferences for each dorm, then the algorithm will assign the dorm with the corresponding type of room to the type of grouping, maximizing the sum of achieved preferences.
+
+    \subsection*{Implementation}
+    The first round is not an optimization problem as the priority numbers, preferences, and our assumptions provide an algorithmic implementation of the roommate matching process. 
+    
+    In the second round, we are dealing with what is fundamentally known as the unbalanced assignment problem for each room type, a special case of the transportation problem. The Jonker-Volgelant algorithm, a variant of the Hungarian algorithm for assignment, runs in $O(n^3)$ time and has an implementation in the \texttt{scipy.optimize} library. If we want to work using a database for matrix data, this seems like a good candidate for our optimization tooling in this problem. 
+    
+    Let $G_k$ be the set of student group of size $k$ and $R_k$ the set of rooms of size $k$ in each dorm, Our objective function is as follows:
+    \[\text{max} \sum_{(i,j) \in G_k \times R_k}  w_{ij}x_{ij}  \]
+    where $w_{ij}$ is the preference of group $i$ for room $j$. Note that if $j_1,j_2$ are both in the same dorm then $w_{ij_1} = w_{ij_2}$ for all $i \in G_k$ by our simplifying assumption that rooms of the same type in the same dorm are equivalent.
+    
+    \subsection*{Sets and Parameters}
+    \textbf{Sets}
+    \begin{itemize}
+        \item \textbf{Dorms} We look at each of the nine dorms as a set. Students will state a preference for living in a room type in each dorm. 
+        \item \textbf{Students} We consider an ordered set of students, each with a specific room draw number (priority).
+    \end{itemize}
+    \textbf{Parameters}
+    \begin{itemize}
+        \item \textbf{Frosh Assignment} We are forced to assign frosh at a certain number for each room type within each dorm.
+        \item \textbf{Capacity} The number of rooms of each type in each dorm, as specified by the floor plans. 
+        \item \textbf{Preference} A collection of utility value for a student towards each dorm by room type. 
+        \item \textbf{Roommate Preference} A collection of utility value for a student when paired with another student, with two other students, or with three other students.
+        \item \textbf{Priorities} Each student has a room draw number, representing a priority for their room choice. 
+    \end{itemize}
+    
+    \subsection*{Collecting Data and Setting Constraints}
+    To establish appropriate constraints, we need to collect information on the living capacity of each dorm. That is, we need data on the number of rooms in each dorm and the number of students that can live in those rooms (e.g. how many singles, doubles and triples are in each dorm). We can access this data easily by just looking at past room draw floor plans. 
+    
+    %There are parts of the room draw rules set that further complicate the constraints. For instance, a student can pull another student into their double and students can lock-pull the last empty room of a suite. These rules are important because we consider in our model the preferences that students have for living with other students. In fact, this is arguably the most important category of preference and ought to be weighted most heavily. 
+    
+    %Students in a suite can also bump frosh out of their suite and take residence in that room, subject to some limitations, which we will explore. We will need to collect data on the number of incoming frosh and the requirements on where those frosh can live. 
+    
+    To demonstrate the way our model might work, we would need to collect real data on preferences from real people. In practice, we can send out actual surveys to collect this data or generate it on our own. However, it is possible that the survey can be unrealistically time-consuming given the scope and complexity of the project. For that reason, we're hoping to test the quality of the model using our own set of generated realistic preferences.
+\end{document}
