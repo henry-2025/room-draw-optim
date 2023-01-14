@@ -9,14 +9,13 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/floorplan_design', (req, res, next) => {
+router.get('/floor_plan_design', (req, res, next) => {
   images = fs.readdirSync('./public/images').filter((fname) => fname.endsWith('.png')).map(fname => {
     var extension;
     switch (parseInt(fname.at(-5))) {
       case 1:
         extension = ' Ground Floor';
         break;
-
       case 2:
         extension = ' Second Floor';
         break;
@@ -25,9 +24,13 @@ router.get('/floorplan_design', (req, res, next) => {
         break;
       default:
     }
-    return { src: `images/${fname}`, name: fname.at(0).toUpperCase() + fname.slice(1, -5) + extension}
+    return { src: `images/${fname}`, name: fname.at(0).toUpperCase() + fname.slice(1, -5) + extension }
   });
-  res.render('floorplan_design', { imageList: images });
+  res.render('floor_plan_design',
+    {
+      cache: true,
+      imageList: images
+    });
 });
 
 
