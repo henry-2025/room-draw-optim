@@ -1,2 +1,3 @@
 *.dll
 *.csv
+backend/node_modules/*
