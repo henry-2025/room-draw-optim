@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Floor Plan Design</title>
-</head>
-<link rel="stylesheet" href="stylesheets/dorm-layouts.css">
-
-<body>
-    <svg version="1.1" id="svg716" width="1200.6664" height="1204.6176" viewBox="0 0 1200.6664 1204.6176"
+<svg version="1.1" id="svg716" width="1200.6664" height="1204.6176" viewBox="0 0 1200.6664 1204.6176"
         sodipodi:docname="atwood.svg" inkscape:export-filename="atwood.svg" inkscape:export-xdpi="96"
         inkscape:export-ydpi="96" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
         xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +69,3 @@
                 transform="rotate(90)" inkscape:label="27" />
         </g>
     </svg>
-</body>
-<script src="javascripts/listeners.js"></script>
-</html>

@@ -26,11 +26,7 @@ router.get('/floor_plan_design', (req, res, next) => {
     }
     return { src: `images/${fname}`, name: fname.at(0).toUpperCase() + fname.slice(1, -5) + extension }
   });
-  res.render('floor_plan_design',
-    {
-      cache: true,
-      imageList: images
-    });
+  res.render('floor_plan_design');
 });
 
 
