@@ -5,37 +5,89 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, iniptial-scale=1.0">
-    <title>Floor Plan Design</title>
+    <title>Preference Selection</title>
 </head>
+<h1>
+    Room Preference Selection
+</h1>
 <link rel="stylesheet" href="stylesheets/dorm-layouts.css">
-
 <body>
     <div class="selection-bar">
-        <select name="preference" id="pref-select" class="selection-bar-item">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <select name="dorm" id="dorm-select" class="selection-bar-item">
-            <option value="all">All</option>
-            <option value="west">West</option>
-            <option value="south">South</option>
-            <option value="east">East</option>
-            <option value="north">North</option>
-            <option value="atwood">Atwood</option>
-            <option value="sontag">Sontag</option>
-            <option value="case">Case</option>
-            <option value="drinkward">Drinkward</option>
-            <option value="linde">Linde</option>
-        </select>
-        <select name="floor" id="floor-select" class="selection-bar-item">
-            <option value="any">Any</option>
-            <option value="1">First</option>
-            <option value="2">Second</option>
-            <option value="3">Third</option>
-        </select>
+        <div>
+            <div>
+                Preference Selection
+            </div>
+            <select name="preference" id="pref-select" class="selection-bar-item">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+
+        <fieldset id="dorm-select">
+            <legend>Dorms</legend>
+            <div>
+                <input type="checkbox" id="dorms-all" name="all" checked>
+                <label for="all">All</label>
+            </div>
+            <div>
+                <input type="checkbox" id="West" name="West">
+                <label for="West">West</label>
+            </div>
+            <div>
+                <input type="checkbox" id="South" name="South">
+                <label for="South">South</label>
+            </div>
+            <div>
+                <input type="checkbox" id="East" name="East">
+                <label for="East">East</label>
+            </div>
+            <div>
+                <input type="checkbox" id="North" name="North">
+                <label for="North">North</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Atwood" name="Atwood">
+                <label for="Atwood">Atwood</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Sontag" name="Sontag">
+                <label for="Sontag">Sontag</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Case" name="Case">
+                <label for="Case">Case</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Drinkward" name="Drinkward">
+                <label for="Drinkward">Drinkward</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Linde" name="Linde">
+                <label for="Linde">Linde</label>
+            </div>
+        </fieldset>
+        <fieldset id="floor-select">
+            <legend>Floors</legend>
+            <div>
+                <input type="checkbox" id="floors-all" name="all" checked>
+                <label for="all">All</label>
+            </div>
+            <div>
+                <input type="checkbox" id="First" name="First">
+                <label for="First">First</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Second" name="Second">
+                <label for="Second">Second</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Third" name="Third">
+                <label for="Third">Third</label>
+            </div>
+        </fieldset>
     </div>
 
     <div>
@@ -933,8 +985,8 @@
         </svg>
     </div>
     <div>
-        <svg class="case first" version="1.1" id="svg4717" width="1089.004" height="1090.415" viewBox="0 0 1089.004 1090.415"
-            sodipodi:docname="case.svg" inkscape:version="0.0"
+        <svg class="case first" version="1.1" id="svg4717" width="1089.004" height="1090.415"
+            viewBox="0 0 1089.004 1090.415" sodipodi:docname="case.svg" inkscape:version="0.0"
             xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
             xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
             xmlns:svg="http://www.w3.org/2000/svg">
@@ -1011,8 +1063,8 @@
                     inkscape:label="QB" />
             </g>
         </svg>
-        <svg class="case second" version="1.1" id="svg4717" width="1089.004" height="1090.415" viewBox="0 0 1089.004 1090.415"
-            sodipodi:docname="case.svg" inkscape:version="0.0"
+        <svg class="case second" version="1.1" id="svg4717" width="1089.004" height="1090.415"
+            viewBox="0 0 1089.004 1090.415" sodipodi:docname="case.svg" inkscape:version="0.0"
             xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
             xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
             xmlns:svg="http://www.w3.org/2000/svg">
@@ -1091,12 +1143,12 @@
         </svg>
     </div>
     <div>
-        
+
     </div>
     <div>
-        <svg class="linde first" version="1.1" id="svg10342" width="942" height="1072" viewBox="0 0 942 1072" sodipodi:docname="linde1.png"
-            inkscape:export-filename="linde1.svg" inkscape:export-xdpi="96" inkscape:export-ydpi="96"
-            xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        <svg class="linde first" version="1.1" id="svg10342" width="942" height="1072" viewBox="0 0 942 1072"
+            sodipodi:docname="linde1.png" inkscape:export-filename="linde1.svg" inkscape:export-xdpi="96"
+            inkscape:export-ydpi="96" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
             xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
             xmlns:svg="http://www.w3.org/2000/svg">
             <defs id="defs10346" />
@@ -1132,9 +1184,10 @@
                 <rect id="rect11229" width="86" height="92" x="59" y="967" inkscape:label="145" />
             </g>
         </svg>
-        <svg class="linde second" version="1.1" id="svg11490" width="989.90063" height="1126.9504" viewBox="0 0 989.90063 1126.9504"
-            sodipodi:docname="linde2.png" inkscape:export-filename="linde2.svg" inkscape:export-xdpi="96"
-            inkscape:export-ydpi="96" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        <svg class="linde second" version="1.1" id="svg11490" width="989.90063" height="1126.9504"
+            viewBox="0 0 989.90063 1126.9504" sodipodi:docname="linde2.png" inkscape:export-filename="linde2.svg"
+            inkscape:export-xdpi="96" inkscape:export-ydpi="96"
+            xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
             xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
             xmlns:svg="http://www.w3.org/2000/svg">
             <defs id="defs11494" />

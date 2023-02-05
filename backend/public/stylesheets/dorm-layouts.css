@@ -10,11 +10,16 @@ svg rect:hover, svg path:hover {
     stroke-width: 10px;
 }
 
-svg path:hover {
-    stroke-width: 10px;
-}
-
 svg .selected {
     fill-opacity: 1;
     fill: green;
+}
+
+.selection-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+h1 {
+    text-align: center;
 }
