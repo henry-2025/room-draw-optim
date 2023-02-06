@@ -30,34 +30,56 @@
 //     image.ondragstart = () => {return false};
 // }
 
+// fetch dorm 
+fetch(new Request('res/rooms')).then((res) => res.json())
+    .then((dorms) => {
+        // create hash
+        var hash = {}
+        for (const dorm of dorms) {
+            if(hash[dorm.dorm_id]) {
+                hash[dorm.dorm_id][dorm.]
+            }
+        }
+
+        for (const dorm of document.getElementsByTagName('g')) {
+            // dorm name needs to be extracted from the class list of the parent element
+            var dormName = room.parentElement;
+            dormName = dormName.filter(c => !(c in ['first', 'second', 'third']));
+            console.assert(dormName.lenth == 1);
+            dormName = dormName[0];
+            dormName = dormName.substring(0, 1).toUpperCase() + dormName.substring(1,);
+
+            // add event listeners to each of the clickables in our svgs
+            for (room of dorm.children) {
+                room.addEventListener('mousedown', (event) => {
+                    const pref_num = document.getElementById('pref-select').selectedIndex + 1;
+                    div = event.target;
+                    localID = div["inkscape:label"];
+                    dorms[]
+                    if (div.classList.contains('selected')) {
+                        div.classList.remove('selected');
+                        preferenceTable
+                    } else {
+                        // update class
+                        div.classList.add('selected');
+                        preferenceTable[pref_num].push()
+
+                        // set preference in preference table
+                    }
+                }, false);
+            }
+        }
+    });
+
 var preferenceTable = {
-    1 : [],
-    2 : [],
-    3 : [],
-    4 : [],
-    5 : []
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: []
 };
 
-for (const dorm of document.getElementsByTagName('g')) {
-    for (room of dorm.children) {
-        room.addEventListener('mousedown', (event) => {
-            const pref_num = document.getElementById('pref-select').selectedIndex + 1;
-            var dorm_name = event.target.parentElement.parentElement.classList;
-            dorm_name.remove('first');
-            dorm_name.remove('second');
-            dorm_name.remove('third');
-            dorm_name = dorm_name[0];
 
-            div = event.target;
-            if (div.classList.contains('selected')) {
-                div.classList.remove('selected');
-            } else {
-                div.classList.add('selected');
-                preferenceTable[pref_num].push()
-            }
-        }, false);
-    }
-}
 
 document.getElementById('pref-select').addEventListener('change',
     displayDorms, false);
@@ -110,20 +132,6 @@ function displayDorms(event) {
     // update selected dorms
 }
 
-/**
- * Function that returns the global dorm id given a dorm name, local room number and dorm floor
- * @param {string} dormName name of the dorm
- * @param {string} roomID room number
- * @param {int} floor dorm floor
- */
-function classToRoomNum(dormName, roomID, floor) {
-    switch (dormName) {
-        case 'atwood':
-
-            break;
+function readableToGlobalID(dormName, localID) {
     
-        default:
-            break;
-    }
-
 }

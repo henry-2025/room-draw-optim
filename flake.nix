@@ -9,6 +9,7 @@
         packages = with pkgs; [
           nodejs
           nodePackages.npm
+          sqlite
         ];
         shellHook = "PATH=./node_modules/.bin:$PATH";
       };

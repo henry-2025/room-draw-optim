@@ -3,6 +3,9 @@ var router = express.Router();
 
 
 const fs = require('fs')
+const sqlite3 = require('sqlite3');
+
+db = new sqlite3.Database('res/dorms.db');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -29,5 +32,14 @@ router.get('/floor_plan_design', (req, res, next) => {
   res.render('floor_plan_design');
 });
 
+router.get('/res/rooms', (req, res, next) => {
+  db.all('SELECT * FROM rooms', [], (err, rooms) => {
+    if (err) {
+      throw err;
+    } else {
+      res.json(rooms);
+    }
+  });
+});
 
 module.exports = router;
