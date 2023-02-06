@@ -1,7 +1,8 @@
 CREATE TABLE rooms(
     local_id VARCHAR(10),
-    dorm_id INTEGER NOT NULL,
     global_id INTEGER PRIMARY KEY,
+    dorm_id INTEGER NOT NULL,
+    floor INTEGER NOT NULL,
     capacity INTEGER NOT NULL,
     dsa INTEGER NOT NULL,
     suite INTEGER NOT NULL);
