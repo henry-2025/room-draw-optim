@@ -55,21 +55,23 @@ fetch(new Request('res/rooms')).then((res) => res.json())
 
                     // add event listeners to each of the clickables in our svgs
                     for (room of dorm.children) {
+                        room.setAttribute('dorm_name', dormName);
                         room.addEventListener('mousedown', (event) => {
                             const pref_num = document.getElementById('pref-select').selectedIndex + 1;
                             div = event.target;
                             localID = div.getAttribute('local_id');
+                            dormName = div.getAttribute('dorm_name');
                             globalID = dormHash[dormName][localID];
                             if (!globalID) {
                                 throw ("Global id could not be found: " + dormName + ":" + localID);
                             }
                             if (div.classList.contains('selected')) {
                                 div.classList.remove('selected');
-                                preferenceTable[pref_num].remove(globalID);
+                                preferenceTable[pref_num].delete(globalID);
                             } else {
                                 // update class
                                 div.classList.add('selected');
-                                preferenceTable[pref_num].push(globalID);
+                                preferenceTable[pref_num].add(globalID);
                             }
                         }, false);
                     }
@@ -78,11 +80,11 @@ fetch(new Request('res/rooms')).then((res) => res.json())
     });
 
 var preferenceTable = {
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-    5: []
+    1: new Set(),
+    2: new Set(),
+    3: new Set(),
+    4: new Set(),
+    5: new Set()
 };
 
 
@@ -125,15 +127,30 @@ document.getElementById('floor-select').addEventListener('change', (event) => {
 }, false);
 
 function displayDorms(event) {
-    const pref = document.getElementById('pref-select');
-    const selected_pref = pref.selectedIndex + 1;
+    const selected_pref = document.getElementById('pref-select').selectedIndex + 1;
 
-    var dorms_boxes = document.getElementById('dorm-select').getElementsByTagName('input');
-    var floor_boxes = document.getElementById('floor-select').getElementsByTagName('input');
+    var dormCheckboxes = Array.from(document.getElementById('dorm-select').getElementsByTagName('input'));
+    var floorCheckboxes = Array.from(document.getElementById('floor-select').getElementsByTagName('input'));
 
-    console.log(event);
+    // update displayed dorms. I think there might be a more elegant and efficient way of doing this through class updates in CSS
 
-    // update views
+    visibleDorms = dormCheckboxes.slice(1,).filter(dorm => dormCheckboxes[0].checked || dorm.checked).map(dorm => dorm.id.toLowerCase());
+    visibleFloors = floorCheckboxes.slice(1,).filter(dorm => floorCheckboxes[0].checked || dorm.checked).map(dorm => dorm.id.toLowerCase());
+
+    hiddenDorms = dormCheckboxes.slice(1,).filter(dorm => !dorm.checked).map(dorm => dorm.id.toLowerCase());
+    hiddenFloors = floorCheckboxes.slice(1,).filter(floor => !floor.checked).map(floor => floor.id.toLowerCase());
+
+    for (const dormName of visibleDorms) {
+        for (const floorName of visibleFloors) {
+            document.getElementsByClassName(dormName + " " + floorName)[0].style.visibility = 'visible';
+        }
+    }
+
+    for (const dormName of hiddenDorms) {
+        for (const floorName of hiddenFloors) {
+            document.getElementsByClassName(dormName + " " + floorName)[0].style.visibility = 'none';
+        }
+    }
 
     // update selected dorms
 }

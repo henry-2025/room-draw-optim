@@ -1,4 +1,5 @@
-svg rect, svg path {
+svg rect,
+svg path {
     fill: #1a1a1a;
     fill-opacity: 0;
     stroke: #000000;
@@ -6,13 +7,22 @@ svg rect, svg path {
     stroke-dasharray: none
 }
 
-svg rect:hover, svg path:hover {
+svg rect:hover,
+svg path:hover {
     stroke-width: 10px;
 }
 
 svg .selected {
     fill-opacity: 1;
     fill: green;
+}
+
+svg .dorm-visible {
+    visibility: visible;
+}
+
+svg {
+    visibility: unset;
 }
 
 .selection-bar {
@@ -22,4 +32,9 @@ svg .selected {
 
 h1 {
     text-align: center;
+}
+
+.dorm-view {
+    display:flex;
+    flex-direction: column;
 }
