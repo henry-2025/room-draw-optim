@@ -156,5 +156,4 @@ function displayDorms(event) {
 }
 
 function readableToGlobalID(dormName, localID) {
-
 }
